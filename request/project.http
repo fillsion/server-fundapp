@@ -1,0 +1,45 @@
+@api = http://localhost:3000/project
+GET {{api}}
+
+###
+
+GET {{api}}/2
+
+###
+
+GET {{api}}/count
+
+###
+
+POST {{api}}
+Content-Type: application/json
+
+{
+    "cedula": "1020831887",
+    "name": "Camilo10",
+    "apellidos": "Mafioly Yacaman",
+    "celular": "3208473683",
+    "correo": "camilomafioly@gmail.com",
+    "codigoPostal": "888888",
+    "ciudad": "Bogota"
+
+}
+
+###
+
+DELETE {{api}}/1111111118
+
+###
+
+PUT {{api}}/1111111120
+Content-Type: application/json
+
+{
+    "cedula": "1111111120",
+    "name": "FillSion",
+    "apellidos": "Malfoy",
+    "celular": "3208473683",
+    "correo": "brevebrevedad@gmail.com",
+    "codigoPostal": "7777777",
+    "ciudad": "Medellin"
+}
