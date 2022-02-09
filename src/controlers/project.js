@@ -4,7 +4,7 @@ export const getProject = async (req, res) => {
   let sql = "SELECT * FROM project";
   const connection = await connect();
   const [rows] = await connection.query(sql);
-  console.log(rows);
+  //console.log(rows);
 
   res.json(rows);
 };

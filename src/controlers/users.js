@@ -29,8 +29,12 @@ export const saveUser = async (req, res) => {
     console.log(errors);
     return res.status(400).send("wrong format");
   }
-  if (req.body.PerifyPassword == req.body.Password){
-  let sql = "INSERT INTO user(Mail, Password, Name, Surname, Phone, PostalCode, City) VALUES (?,?,?,?,?,?,?)";
+  if (req.body.verifyPassword != req.body.password){
+    console.log("here3register");
+    const response = {res: "password not the same as verify password",error:true};
+    return res.status(400).json(response);
+  }
+ 
   //handle errors
   // const valid = new validator(req);
   
@@ -38,7 +42,7 @@ export const saveUser = async (req, res) => {
   //   console.log("no cumplio con algo");
   //   return;
   // }
-  
+  let sql = "INSERT INTO user(Mail, Password, Name, Surname, Phone, PostalCode, City) VALUES (?,?,?,?,?,?,?)";
   const connection = await connect();
   const result = await connection.query(sql, [
     req.body.mail,
@@ -49,24 +53,10 @@ export const saveUser = async (req, res) => {
     req.body.postalCode,
     req.body.city,
   ]);
-  if (result.length===0){
-    console.log("hereregister");
-    const response = {res: "Couln't register account", error:true};
-    return res.status(401).json(result);
-    
-  }
   console.log("here2register");
   const response = {res: "User registered!", error: false};
-  return res.status(200).json(result);
-  res.json({
-    id: result.id,
-    ...req.body,
-  });
-} else{
-  console.log("here3register");
-  const response = {res: "password not the same as verify password",error:true};
-  return res.status(400).json(response)
-}
+  return res.status(200).json(response);
+
 };
 export const deleteUser = async (req, res) => {
   const connection = await connect();
@@ -98,7 +88,9 @@ export const authenticateUser = async (req, res) => {
     const result = {res: "User not found", error:true};
     return res.status(401).json(result);
   }
+  console.log(rows[0]);
   const result = {res: rows[0], error: false};
+  console.log(result);
   return res.status(200).json(result);
 };
 
