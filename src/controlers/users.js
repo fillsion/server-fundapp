@@ -1,5 +1,6 @@
 import { connect } from "../database";
-import {validator} from "./validator";
+const {validationResult } = require('express-validator');
+const validator = require("./validator");
 export const getUser = async (req, res) => {
   let sql = "SELECT * FROM user";
   const connection = await connect();
@@ -22,22 +23,31 @@ export const getUserCount = async (req, res) => {
   res.json(rows[0]["count(*)"]);
 };
 export const saveUser = async (req, res) => {
+  console.log(req.body);
+  const errors = validationResult(req);
+  if(!errors.isEmpty()){
+    console.log(errors);
+    return res.status(400).send("wrong format");
+  }
   if (req.body.PerifyPassword == req.body.Password){
   let sql = "INSERT INTO user(Mail, Password, Name, Surname, Phone, PostalCode, City) VALUES (?,?,?,?,?,?,?)";
   //handle errors
-  if (!validator(req).validate()){
-    console.log("no cumplio con algo");
-    return;
-  }
+  // const valid = new validator(req);
+  
+  // if (!valid.validate()){
+  //   console.log("no cumplio con algo");
+  //   return;
+  // }
+  
   const connection = await connect();
   const result = await connection.query(sql, [
-    req.params.Mail,
-    req.params.Password,
-    req.params.Name,
-    req.params.Surname,
-    req.params.Phone,
-    req.params.PostalCode,
-    req.params.City,
+    req.body.mail,
+    req.body.password,
+    req.body.name,
+    req.body.surname,
+    req.body.phone,
+    req.body.postalCode,
+    req.body.city,
   ]);
   if (result.length===0){
     console.log("hereregister");

@@ -1,56 +1,65 @@
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, check } = require('express-validator');
 
 
 class validator {
+    constructor(form){
+        this.form = form;
+    }
 
-    const validate=()=>{
-        return (validateMail()&&validateName()&&validateSurname()&& validateCity()&&validatePassword()&&validatePostal()&&validatePhone());
+    validate(){
+        return (this.validateMail()&&this.validateName()&&this.validateSurname()&& this.validateCity()&&this.validatePassword()&&this.validatePostal()&&this.validatePhone());
     }
     
-const validateMail=()=>{
-    const emailToValidate = form.params.Mail;
+    validateMail(){
+    const emailToValidate = this.form.params.Mail;
    // const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    return body(emailToValidate).isEmail();//emailRegexp.test(emailToValidate); //form.param.Mails.isEmail();
+   const result = body(this.form.params.Mail).isEmail;
+    if (result){
+        return result;
+    }alert("Name field wrong");
+   return result;
+   return body(emailToValidate).isEmail();//emailRegexp.test(emailToValidate); //this.form.param.Mails.isEmail();
 }
 
-const validateName=()=>{
-    const result = body(form.params.Name).isAlpha;
+    validateName(){
+    const result = check(this.form.params.Name).isAlpha().optional;
+    console.log("acaaaaaaaaaaaaaaaaa", this.form.params.Name," resultado:" ,result);
     if (result){
         return result;
     }alert("Name field wrong");
     return result;
     
 }
-const validateSurname=()=>{
-    const result = body(form.params.Surname).isAlpha;
+    validateSurname(){
+    const result = body(this.form.params.Surname).isAlpha;
     if (result){
         return result;
     }alert("Surname field wrong");
     return result;
 }
-const validatePassword=()=>{
-    const result= body(form.params.Password).isStrongPassword;
+    validatePassword(){
+    const result= body(this.form.params.Password).isStrongPassword;
     if (result){
         return result;
     }alert("Password field wrong");
     return result;
 }
-const validatePhone=()=>{
-    const result = body(form.params.Name).isMobilePhone;
+    validatePhone(){
+    const result = body(this.form.params.Name).isMobilePhone;
     if (result){
         return result;
     }alert("Phone field wrong");
     return result;
 }
-const validatePostal=()=>{
-    const result = body(form.params.PostalCode).isPostalCode;
+    validatePostal(){
+    const result = body(this.form.params.PostalCode).isPostalCode;
     if (result){
         return result;
     }alert("Postal field wrong");
     return result;
 }
-const validateCity=()=>{
-    const result = body(form.params.PostalCity).isString;
+    validateCity(){
+    const result = body(this.form.params.PostalCity).isString;
     if (result){
         return result;
     }alert("City field wrong");
@@ -62,4 +71,4 @@ const validateCity=()=>{
 
 }
 
-export default validator;
+module.exports=validator;

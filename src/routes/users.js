@@ -1,4 +1,5 @@
 import { Router } from "express";
+const { body } = require('express-validator');
 import {
   deleteUser,
   getSingleUser,
@@ -42,7 +43,14 @@ router.get("/User/:id", getSingleUser);
  *    summary: save user into DB
  */
 //router.post("/User", saveUser);
-router.post("/User/:Mail/:Password/:VerifyPassword/:Name/:Surname/:Phone/:PostalCode/:City", saveUser);
+router.post("/User", 
+body('name').isAlpha(),
+body('surname').isAlpha(),
+body('password').isLength({min:6}),
+body('mail').isEmail(),
+body('phone').isMobilePhone(),
+body('city').isAlpha(),
+saveUser);
 /**
  * @swagger
  * /User/cedula:
