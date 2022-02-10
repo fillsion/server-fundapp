@@ -1,4 +1,5 @@
 import { connect } from "../database";
+const {validationResult } = require('express-validator');
 export const getProject = async (req, res) => {
   console.log("here at get")
   let sql = "SELECT * FROM project";
@@ -22,23 +23,27 @@ export const getProjectCount = async (req, res) => {
   res.json(rows[0]["count(*)"]);
 };
 export const saveProject = async (req, res) => {
+  console.log(req.body);
+  const errors = validationResult(req);
+  if(!errors.isEmpty()){
+    console.log(errors);
+    return res.status(400).send("wrong format");
+  }
   let sql =
-    "INSERT INTO project(userID, Name, Description, Scope, TentativeDate, Type, State) VALUES (?,?,?,?,?,?)";
+    "INSERT INTO project(userID, Name, Description, Scope, TentativeDate, Type, State) VALUES (?,?,?,?,?,?,?)";
   const connection = await connect();
   const result = await connection.query(sql, [
     req.body.userID,
-    req.body.Name,
-    req.body.Description,
-    req.body.Scope,
-    req.body.TentativeDate,
-    req.body.Type,
-    req.body.State,
+    req.body.name,
+    req.body.description,
+    req.body.scope,
+    req.body.tentativeDate,
+    req.body.type,
+    req.body.state,
   ]);
-  console.log(result);
-  res.json({
-    id: result.id,
-    ...req.body,
-  });
+  console.log("here2register");
+  const response = {res: "Project registered!", error: false};
+  return res.status(200).json(response);
 };
 export const deleteProject = async (req, res) => {
   const connection = await connect();

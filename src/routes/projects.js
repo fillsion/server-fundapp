@@ -1,4 +1,5 @@
 import { Router } from "express";
+const { body } = require('express-validator');
 import {
   deleteProject,
   getSingleProject,
@@ -39,7 +40,14 @@ router.get("/project/:id", getSingleProject);
  *  post:
  *    summary: save user into DB
  */
-router.post("/project", saveProject);
+ router.post("/User", 
+ body('name').isNumeric(),
+ body('description').isLength({min:30}),
+ body('scope').isLength({min:20}),
+ body('tentativeDate').isDate(),
+ body('type').isAlphanumeric(),
+ body('state').isAlphanumeric(),
+ saveProject);
 
 /**
  * @swagger
