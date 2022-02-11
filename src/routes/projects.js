@@ -40,13 +40,13 @@ router.get("/project/:id", getSingleProject);
  *  post:
  *    summary: save user into DB
  */
- router.post("/User", 
- body('name').isNumeric(),
+ router.post("/project", 
+ body('name').isLength({min:1}),
  body('description').isLength({min:30}),
  body('scope').isLength({min:20}),
  body('tentativeDate').isDate(),
- body('type').isAlphanumeric(),
- body('state').isAlphanumeric(),
+ body('type').isLength({min:1}),
+ body('state').isLength({min:1}),
  saveProject);
 
 /**
