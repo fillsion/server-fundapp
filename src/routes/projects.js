@@ -7,6 +7,7 @@ import {
   getProjectCount,
   saveProject,
   updateProject,
+  userProjects,
 } from "../controlers/project";
 const router = Router();
 
@@ -24,7 +25,7 @@ router.get("/project", getProject);
  *  get:
  *    summary: Get user count
  */
-router.get("/project/count", getProjectCount);
+//router.get("/project/count", getProjectCount);
 
 /**
  * @swagger
@@ -32,7 +33,7 @@ router.get("/project/count", getProjectCount);
  *  get:
  *    summary: Get single user
  */
-router.get("/project/:id", getSingleProject);
+//router.get("/project/:id", getSingleProject);
 
 /**
  * @swagger
@@ -63,6 +64,7 @@ router.delete("/project/:id", deleteProject);
  *  put:
  *    summary: Update user
  */
-router.put("/project/:cedula", updateProject);
+//router.put("/project/:cedula", updateProject);
 
+router.get("/project/userProjects/:userID",userProjects);
 export default router;

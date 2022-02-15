@@ -58,3 +58,12 @@ export const updateProject = async (req, res) => {
   const result = await connection.query(sql, [req.body, req.params.id]);
   res.sendStatus(204);
 };
+
+export const userProjects = async (req, res) => {
+  let sql =
+    "SELECT * FROM project WHERE userID = ?";
+  const connection = await connect();
+  const [rows] = await connection.query(sql, [req.params.userID]);
+  //console.table( rows);
+  res.json(rows);
+};
