@@ -57,7 +57,7 @@ saveUser);
  *  delete:
  *    summary: Delete user
  */
-router.delete("/User/:id", deleteUser);
+router.delete("/User/delete/:id", deleteUser);
 
 /**
  * @swagger
@@ -65,7 +65,7 @@ router.delete("/User/:id", deleteUser);
  *  put:
  *    summary: Update user
  */
-router.put("/User/:id", updateUser);
+router.put("/User/update/:id", updateUser);
 
 router.get("/User/:Mail", getUserByMail);
 
