@@ -8,6 +8,7 @@ import {
   saveProject,
   updateProject,
   userProjects,
+  getSearchProjects,
 } from "../controlers/project";
 const router = Router();
 
@@ -45,7 +46,7 @@ router.get("/project", getProject);
  body('name').isLength({min:1}),
  body('description').isLength({min:30}),
  body('scope').isLength({min:20}),
- body('tentativeDate').isDate(),
+ body('tentativeDate').isLength({min:1}),
  body('type').isLength({min:1}),
  body('state').isLength({min:1}),
  saveProject);
@@ -67,4 +68,6 @@ router.delete("/project/:id", deleteProject);
 //router.put("/project/:cedula", updateProject);
 
 router.get("/project/userProjects/:userID",userProjects);
+
+router.get("/project/search/:search", getSearchProjects);
 export default router;

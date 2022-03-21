@@ -9,6 +9,7 @@ const specs = swaggerJSDoc(options);
 
 import userRoutes from "./routes/users";
 import projectRoutes from "./routes/projects"
+import contributionRoutes from "./routes/contribution"
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(userRoutes);
 app.use(projectRoutes);
+app.use(contributionRoutes);
    
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(specs));
 //app.get("/prueba", (req, res) => {

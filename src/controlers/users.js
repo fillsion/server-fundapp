@@ -11,7 +11,7 @@ export const getUser = async (req, res) => {
 };
 
 export const getSingleUser = async (req, res) => {
-  let sql = "SELECT Name, Surname,  Mail FROM user WHERE id = ?";
+  let sql = "SELECT Name, Surname, Mail, Phone, City FROM user WHERE id = ?";
   console.log("i am here in single user by id");
   const connection = await connect();
   const [rows] = await connection.query(sql, [req.params.id]);

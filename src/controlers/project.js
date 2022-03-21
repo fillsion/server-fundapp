@@ -67,3 +67,12 @@ export const userProjects = async (req, res) => {
   //console.table( rows);
   res.json(rows);
 };
+
+export const getSearchProjects = async (req, res) => {
+  let sql =
+    "SELECT * FROM project WHERE project.Name LIKE '%" + req.params.search + "%' or project.Type LIKE '%" + req.params.search + "%'";
+  const connection = await connect();
+  const [rows] = await connection.query(sql);
+  //console.table( rows);
+  res.json(rows);
+};
