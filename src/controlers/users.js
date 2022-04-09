@@ -1,5 +1,5 @@
 import { connect } from "../database";
-const {validationResult } = require('express-validator');
+const { validationResult } = require("express-validator");
 const validator = require("./validator");
 export const getUser = async (req, res) => {
   let sql = "SELECT * FROM user";
@@ -26,24 +26,32 @@ export const getUserCount = async (req, res) => {
 export const saveUser = async (req, res) => {
   console.log(req.body);
   const errors = validationResult(req);
-  if(!errors.isEmpty()){
+  if (!errors.isEmpty()) {
     console.log(errors);
-    return res.status(400).send("wrong format");
+    const response = {
+      res: errors.array()[0]["param"] + " field has the wrong format",
+      error: true,
+    };
+    return res.status(200).send(response);
   }
-  if (req.body.verifyPassword != req.body.password){
+  if (req.body.verifyPassword != req.body.password) {
     console.log("here3register");
-    const response = {res: "password not the same as verify password",error:true};
-    return res.status(400).json(response);
+    const response = {
+      res: "password not the same as verify password",
+      error: true,
+    };
+    return res.status(200).json(response);
   }
- 
+
   //handle errors
   // const valid = new validator(req);
-  
+
   // if (!valid.validate()){
   //   console.log("no cumplio con algo");
   //   return;
   // }
-  let sql = "INSERT INTO user(Mail, Password, Name, Surname, Phone, PostalCode, City) VALUES (?,?,?,?,?,?,?)";
+  let sql =
+    "INSERT INTO user(Mail, Password, Name, Surname, Phone, PostalCode, City) VALUES (?,?,?,?,?,?,?)";
   const connection = await connect();
   const result = await connection.query(sql, [
     req.body.mail,
@@ -55,9 +63,8 @@ export const saveUser = async (req, res) => {
     req.body.city,
   ]);
   console.log("here2register");
-  const response = {res: "User registered!", error: false};
+  const response = { res: "User registered!", error: false };
   return res.status(200).json(response);
-
 };
 export const deleteUser = async (req, res) => {
   const connection = await connect();
@@ -83,15 +90,18 @@ export const getUserByMail = async (req, res) => {
 export const authenticateUser = async (req, res) => {
   let sql = "SELECT id, Name FROM user WHERE Mail = ? AND Password = ?";
   const connection = await connect();
-  const [rows] = await connection.query(sql, [req.params.Mail, req.params.Password]);
-  
-  if (rows.length===0){
-    const result = {res: "User not found", error:true};
-    return res.status(401).json(result);
+  const [rows] = await connection.query(sql, [
+    req.params.Mail,
+    req.params.Password,
+  ]);
+
+  if (rows.length === 0) {
+    const result = { res: "User not found", error: true };
+    console.log("returning here");
+    return res.status(200).json(result);
   }
   console.log(rows[0]);
-  const result = {res: rows[0], error: false};
+  const result = { res: rows[0], error: false };
   console.log(result);
   return res.status(200).json(result);
 };
-

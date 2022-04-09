@@ -1,7 +1,7 @@
 import { connect } from "../database";
-const {validationResult } = require('express-validator');
+const { validationResult } = require("express-validator");
 export const getProject = async (req, res) => {
-  console.log("here at get")
+  console.log("here at get");
   let sql = "SELECT * FROM project";
   const connection = await connect();
   const [rows] = await connection.query(sql);
@@ -25,12 +25,17 @@ export const getProjectCount = async (req, res) => {
 export const saveProject = async (req, res) => {
   console.log(req.body);
   const errors = validationResult(req);
-  if(!errors.isEmpty()){
-    console.log(errors);
-    return res.status(400).send("wrong format");
+  if (!errors.isEmpty()) {
+    console.log(errors.array()[0]["param"], "errors here");
+    const response = {
+      res: errors.array()[0]["param"] + " field has the wrong format",
+      error: true,
+    };
+    console.log(response);
+    return res.status(200).json(response);
   }
   let sql =
-    "INSERT INTO project(userID, Name, Description, Scope, TentativeDate, Type, State) VALUES (?,?,?,?,?,?,?)";
+    "INSERT INTO project(userID, Name, Description, Scope, TentativeDate, Type, State, Rate, TotalMount, PayFrecuency) VALUES (?,?,?,?,?,?,?,?,?,?)";
   const connection = await connect();
   const result = await connection.query(sql, [
     req.body.userID,
@@ -40,9 +45,12 @@ export const saveProject = async (req, res) => {
     req.body.tentativeDate,
     req.body.type,
     req.body.state,
+    req.body.rate,
+    req.body.totalMount,
+    req.body.payFrecuency,
   ]);
   console.log("here2register");
-  const response = {res: "Project registered!", error: false};
+  const response = { res: "Project registered!", error: false };
   return res.status(200).json(response);
 };
 export const deleteProject = async (req, res) => {
@@ -60,8 +68,7 @@ export const updateProject = async (req, res) => {
 };
 
 export const userProjects = async (req, res) => {
-  let sql =
-    "SELECT * FROM project WHERE userID = ?";
+  let sql = "SELECT * FROM project WHERE userID = ?";
   const connection = await connect();
   const [rows] = await connection.query(sql, [req.params.userID]);
   //console.table( rows);
@@ -70,7 +77,11 @@ export const userProjects = async (req, res) => {
 
 export const getSearchProjects = async (req, res) => {
   let sql =
-    "SELECT * FROM project WHERE project.Name LIKE '%" + req.params.search + "%' or project.Type LIKE '%" + req.params.search + "%'";
+    "SELECT * FROM project WHERE project.Name LIKE '%" +
+    req.params.search +
+    "%' or project.Type LIKE '%" +
+    req.params.search +
+    "%'";
   const connection = await connect();
   const [rows] = await connection.query(sql);
   //console.table( rows);
