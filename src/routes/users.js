@@ -72,5 +72,5 @@ router.put("/User/update/:id", updateUser);
 
 router.get("/User/:Mail", getUserByMail);
 
-router.get("/User/:Mail/:Password", authenticateUser);
+router.get("/User/authenticate/:Mail/:Password", authenticateUser);
 export default router;

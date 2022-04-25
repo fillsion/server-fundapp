@@ -32,7 +32,7 @@ export const saveProject = async (req, res) => {
       error: true,
     };
     console.log(response);
-    return res.status(200).json(response);
+    return res.status(400).json(response);
   }
   let sql =
     "INSERT INTO project(userID, Name, Description, Scope, TentativeDate, Type, State, Rate, TotalMount, PayFrecuency) VALUES (?,?,?,?,?,?,?,?,?,?)";
@@ -49,8 +49,8 @@ export const saveProject = async (req, res) => {
     req.body.totalMount,
     req.body.payFrecuency,
   ]);
-  console.log("here2register");
-  const response = { res: "Project registered!", error: false };
+  console.log("here2register",  result[0].insertId);
+  const response = { res: "Project registered!", id: result[0].insertId, error: false };
   return res.status(200).json(response);
 };
 export const deleteProject = async (req, res) => {
